@@ -23,7 +23,7 @@ def main():
 
 @app.route('/')
 def home_page():
-    return render_template('home_page.html')
+    return render_template('home_page.html', title='Добро пожаловать!')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -75,7 +75,7 @@ def logout():
 
 
 @app.route('/profile')
-@login.required
+@login_required
 def profile():
     return render_template('profile.html')
 
