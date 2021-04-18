@@ -80,17 +80,27 @@ def profile():
     return render_template('profile.html')
 
 
-@app.route('/films')
-def films():
+@app.route('/entertain/<tp>')
+def films(tp):
+    if tp != "films" and tp != "books" and tp != "TV-series":
+        redirect('/')
+    if tp == "TV-series":
+        tp = "TV series"
+        title_h = "Сериалы"
+    elif tp == "books":
+        title_h = "Книги"
+    else:
+        title_h = "Фильмы"
     with open('db/entertain.json', encoding='utf-8') as f:
         data = json.load(f)
-        data_n = sorted(data["films"])
+        data_n = sorted(data[tp])
         number = len(data_n) // 3
         length = len(data_n)
         image = []
         for i in range(length):
-            image.append(url_for('static', filename=f'images/{data["films"][f"{data_n[i]}"]["Постер"]}'))
-    return render_template('films.html', data=data, data_n=data_n, number=number, length=length, image=image)
+            image.append(url_for('static', filename=f'images/{data[tp][f"{data_n[i]}"]["Постер"]}'))
+    return render_template('entertain.html', data=data, data_n=data_n, number=number, length=length, image=image,
+                           title_h=title_h)
 
 
 if __name__ == '__main__':

@@ -21,9 +21,9 @@
                 База Данных<span class="caret"></span>
             </button>
         <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/films">Фильмы</a></li>
-            <li><a class="dropdown-item" href="#">Сериалы</a></li>
-            <li><a class="dropdown-item" href="#">Книги</a></li>
+            <li><a class="dropdown-item" href="/entertain/films">Фильмы</a></li>
+            <li><a class="dropdown-item" href="/entertain/TV-series">Сериалы</a></li>
+            <li><a class="dropdown-item" href="/entertain/books">Книги</a></li>
         </ul>
         {% if current_user.is_authenticated %}
         <a class="btn btn-dark" href="/logout">{{ current_user.name }}</a>
