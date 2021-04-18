@@ -19,7 +19,6 @@ def load_user(user_id):
 
 def main():
     db_session.global_init("db/libs.db")
-    app.run()
 
 
 @app.route('/')
