@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, jsonify
+from flask import Flask, render_template, redirect, url_for
 from loginform import LoginForm, RegisterForm
 from data import db_session
 from data.users import User
@@ -86,7 +86,12 @@ def films():
     with open('db/entertain.json', encoding='utf-8') as f:
         data = json.load(f)
         data_n = sorted(data["films"])
-    return render_template('films.html', data=data, data_n=data_n)
+        number = len(data_n) // 3
+        length = len(data_n)
+        image = []
+        for i in range(length):
+            image.append(url_for('static', filename=f'images/{data["films"][f"{data_n[i]}"]["Постер"]}'))
+    return render_template('films.html', data=data, data_n=data_n, number=number, length=length, image=image)
 
 
 if __name__ == '__main__':

@@ -1,14 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% %}
+<h1>Фильмы</h1>
+{% for i in range(number) %}
 <div class="row">
     <div class="col-sm">
-        <img src=data[""][""] width="200" height="200" alt="Здесь должна была быть картинка">
+        <div><img src="{{ image[i * 3] }}" width="250" height="350" alt="Здесь что-то было"></div>
+        <div><a href="#">{{ data_n[i * 3] }}</a></div>
+    </div>
+    <div class='col-sm'>
+        <div><img src="{{ image[i * 3 + 1] }}" width="250" height="350" alt="Здесь что-то было"></div>
+        <div><a href="#">{{ data_n[i * 3 + 1] }}</a></div>
     </div>
     <div class="col-sm">
+        <div><img src="{{ image[i * 3 + 2] }}" width="250" height="350" alt="Здесь что-то было"></div>
+        <div><a href="#">{{ data_n[i * 3 + 2] }}</a></div>
     </div>
+</div>
+{% endfor %}
+<div class="row">
+    {% for j in range(length - (number * 3)) %}
     <div class="col-sm">
+        <div><img src="{{ image[-j - 1] }}" width="250" height="350" alt="Здесь что-то было"></div>
+        <div><a href="#">{{ data_n[-j - 1] }}</a></div>
     </div>
+    {% endfor %}
 </div>
 {% endblock %}
