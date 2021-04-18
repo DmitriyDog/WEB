@@ -3,6 +3,7 @@ from loginform import LoginForm, RegisterForm
 from data import db_session
 from data.users import User
 from flask_login import LoginManager, login_user, login_required, logout_user
+import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Very_Very_secret_key'
@@ -78,6 +79,14 @@ def logout():
 @login_required
 def profile():
     return render_template('profile.html')
+
+
+@app.route('/films')
+def films():
+    with open('db/entertain.json', encoding='utf-8') as f:
+        data = json.load(f)
+        data_n = sorted(data["films"])
+    return render_template('films.html', data=data, data_n=data_n)
 
 
 if __name__ == '__main__':
