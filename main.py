@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, url_for
 from loginform import LoginForm, RegisterForm
 from data import db_session
 from data.users import User
+from data.object_ent import Entertain
 from flask_login import LoginManager, login_user, login_required, logout_user
 import json
 
@@ -19,6 +20,18 @@ def load_user(user_id):
 
 def main():
     db_session.global_init("db/libs.db")
+    with open('db/entertain.json', encoding='utf-8') as f:
+        data = json.load(f)
+    for i in list(data.keys()):
+        for j in list(data[i].keys()):
+            db_sess = db_session.create_session()
+            if not list(db_sess.query(Entertain).filter(Entertain.title == j)):
+                ent = Entertain(
+                    type=i,
+                    title=j
+                )
+                db_sess.add(ent)
+            db_sess.commit()
 
 
 @app.route('/')
