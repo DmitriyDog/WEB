@@ -81,7 +81,7 @@ def profile():
 
 
 @app.route('/entertain/<tp>/')
-def films(tp):
+def category(tp):
     if tp != "films" and tp != "books" and tp != "TV-series":
         return redirect('/')
     if tp == "TV-series":
@@ -99,6 +99,8 @@ def films(tp):
         image = []
         for i in range(length):
             image.append(url_for('static', filename=f'images/{data[tp][f"{data_n[i]}"]["Постер"]}'))
+    if tp == "TV series":
+        tp = "TV-series"
     return render_template('entertain.html', data=data, data_n=data_n, number=number, length=length, image=image,
                            title_h=title_h, tp=tp)
 
@@ -107,11 +109,18 @@ def films(tp):
 def find_page(tp, name):
     if tp != "films" and tp != "books" and tp != "TV-series":
         return redirect('/')
+    if tp == "TV-series":
+        tp = "TV series"
     with open('db/entertain.json', encoding='utf-8') as f:
         data = json.load(f)
     for i in data[f"{tp}"].keys():
         if i == name:
-            return render_template('info_page.html', data=data[f"{tp}"][name], name=name)
+            image = url_for('static', filename=f'images/{data[f"{tp}"][name]["Постер"]}')
+            length = len(data[f"{tp}"][name].keys()) - 1
+            keys = list(data[f"{tp}"][name].keys())
+            values = list(data[f"{tp}"][name].values())
+            return render_template('info_page.html', data_keys=keys, data_values=values, name=name, image=image,
+                                   length=length)
 
 
 if __name__ == '__main__':

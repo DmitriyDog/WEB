@@ -1,6 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>{{ name }}</h1>
-
+<h1 class="text-center">{{ name }}</h1>
+<div class="row mt-5">
+    <div class="col-sm-4"><img src="{{ image }}" alt="Здесь должно что-то быть" width="350" height="550"></div>
+    <div class="col-sm-8">
+        <div class="row mt-3"><div class="big">Средняя оценка:</div></div>
+        {% for y in range(length) %}
+        {% if data_keys[y] != "Описание" %}
+        <div class="row mt-3">
+            <div>{{ data_keys[y] }}</div>
+            <div>: {{ data_values[y] }}</div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        <div class="row mt-3">{{ data_keys[0] }}:</div>
+        <div class="row mt-auto">{{ data_values[0] }}</div>
+    </div>
+</div>
 {% endblock %}
