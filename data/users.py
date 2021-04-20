@@ -18,7 +18,7 @@ class User(SqlAlchemyBase, UserMixin):
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     created_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                      default=datetime.datetime.now)
-    completed = orm.relation("Entertain",
+    related = orm.relation("Entertain",
                              secondary="association",
                              backref="users")
 

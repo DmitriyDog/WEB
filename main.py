@@ -1,10 +1,12 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for,request
 from loginform import LoginForm, RegisterForm
 from data import db_session
 from data.users import User
 from data.object_ent import Entertain
 from flask_login import LoginManager, login_user, login_required, logout_user
 import json
+from Rate import Rate
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Very_Very_secret_key'
@@ -115,10 +117,10 @@ def category(tp):
     if tp == "TV series":
         tp = "TV-series"
     return render_template('entertain.html', data=data, data_n=data_n, number=number, length=length, image=image,
-                           title_h=title_h, tp=tp)
+                           title_h=title_h, tp=tp, title=title_h)
 
 
-@app.route('/entertain/<tp>/<name>/')
+@app.route('/entertain/<tp>/<name>/', methods=['GET', 'POST'])
 def find_page(tp, name):
     if tp != "films" and tp != "books" and tp != "TV-series":
         return redirect('/')
@@ -128,12 +130,24 @@ def find_page(tp, name):
         data = json.load(f)
     for i in data[f"{tp}"].keys():
         if i == name:
+            form = Rate()
             image = url_for('static', filename=f'images/{data[f"{tp}"][name]["Постер"]}')
             length = len(data[f"{tp}"][name].keys()) - 1
             keys = list(data[f"{tp}"][name].keys())
             values = list(data[f"{tp}"][name].values())
+            if request.method == 'POST':
+                db_sess = db_session.create_session()
+                now = db_sess.query(Entertain).filter(Entertain.title == i).first()
+                if form.rating.data:
+                    now.count = now.count + 1
+                    now.rate = now.rate + float(form.rating.data)
+                db_sess.commit()
+            db_sess = db_session.create_session()
+            now = db_sess.query(Entertain).filter(Entertain.title == i).first()
+            average = round(now.rate / now.count, 2)
+            db_sess.commit()
             return render_template('info_page.html', data_keys=keys, data_values=values, name=name, image=image,
-                                   length=length)
+                                    length=length, form=form, title=i, average=average)
 
 
 if __name__ == '__main__':
