@@ -9,6 +9,9 @@
         div.big {
         font-size: 130%;
         }
+        div.small {
+        font-size: 75%;
+        }
     </style>
     <title>{{title}}</title>
 </head>
@@ -26,7 +29,7 @@
             <li><a class="dropdown-item" href="/entertain/books">Книги</a></li>
         </ul>
         {% if current_user.is_authenticated %}
-        <a class="btn btn-dark" href="/logout">{{ current_user.name }}</a>
+        <a class="btn btn-dark" href="/profile">{{ current_user.name }}</a>
         {% else %}
             <a class="btn btn-primary" href="/register">Зарегистрироваться</a>
             <a class="btn btn-success" href="/login">Войти</a>
