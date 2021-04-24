@@ -6,6 +6,7 @@ from data.object_ent import Entertain
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 import json
 from Rate import Rate
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Very_Very_secret_key'
@@ -207,5 +208,5 @@ def find_page(tp, name):
 
 
 if __name__ == '__main__':
-    main()
-    app.run(port=8080, host='127.0.0.1')
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
