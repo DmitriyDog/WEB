@@ -21,3 +21,4 @@ class Entertain(SqlAlchemyBase):
     type = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     rate = sqlalchemy.Column(sqlalchemy.Float, nullable=False, default=0)
     count = sqlalchemy.Column(sqlalchemy.Integer, default=0)
+    critics = sqlalchemy.Column(sqlalchemy.String, default='')
