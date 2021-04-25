@@ -205,7 +205,22 @@ def find_page(tp, name):
                                    length=length, form=form, title=i, average=average)
 
 
+@app.route('/redact', methods=['GET', 'POST'])
+@login_required
+def redact():
+    if request.method == 'POST':
+        name = request.form['name']
+        about = request.form['about']
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.id == current_user.id).first()
+        user.name = name
+        user.about = about
+        db_sess.commit()
+        redirect('/profile')
+    return render_template('redact.html', title='Изменение профиля')
+
+
 if __name__ == '__main__':
     main()
     port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='127.0.0.1', port=port)
