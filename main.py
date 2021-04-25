@@ -216,7 +216,7 @@ def redact():
         user.name = name
         user.about = about
         db_sess.commit()
-        redirect('/profile')
+        return redirect('/profile')
     return render_template('redact.html', title='Изменение профиля')
 
 
