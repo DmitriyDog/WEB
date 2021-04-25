@@ -99,28 +99,26 @@ def profile():
     books_rates = []
     tv_rates = []
     db_sess = db_session.create_session()
-    films = db_sess.query(Entertain).filter(Entertain.type == 'films').all()
-    books = db_sess.query(Entertain).filter(Entertain.type == 'books').all()
-    tv_series = db_sess.query(Entertain).filter(Entertain.type == 'TV series').all()
     db_sess.commit()
-    for i in films:
-        for j in i.critics.split():
-            if str(current_user.id) == j.split('-')[0]:
-                films_user.append(i)
-                films_rates.append(j.split('-')[1])
-                break
-    for i in books:
-        for j in i.critics.split():
-            if str(current_user.id) == j.split('-')[0]:
-                books_user.append(i)
-                books_rates.append(j.split('-')[1])
-                break
-    for i in tv_series:
-        for j in i.critics.split():
-            if str(current_user.id) == j.split('-')[0]:
-                tv_series_user.append(i)
-                tv_rates.append(j.split('-')[1])
-                break
+    for i in current_user.related:
+        if i.type == 'films':
+            films_user.append(i)
+            for j in i.critics.split():
+                if str(current_user.id) == j.split('-')[0]:
+                    films_rates.append(j.split('-')[1])  # можно не добавлять
+                    # break так как пользователь ставит только одну оценку на блок
+    for i in current_user.related:
+        if i.type == 'books':
+            books_user.append(i)
+            for j in i.critics.split():
+                if str(current_user.id) == j.split('-')[0]:
+                    books_rates.append(j.split('-')[1])
+    for i in current_user.related:
+        if i.type == 'TV series':
+            tv_series_user.append(i)
+            for j in i.critics.split():
+                if str(current_user.id) == j.split('-')[0]:
+                    tv_rates.append(j.split('-')[1])
     date = str(current_user.created_date)[:10]
     length_b = len(books_user)
     length_t = len(tv_series_user)
@@ -210,4 +208,4 @@ def find_page(tp, name):
 if __name__ == '__main__':
     main()
     port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='127.0.0.1', port=port)
