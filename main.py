@@ -213,7 +213,8 @@ def redact():
         about = request.form['about']
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.id == current_user.id).first()
-        user.name = name
+        if ''.join(name.split()) != '':
+            user.name = name
         user.about = about
         db_sess.commit()
         return redirect('/profile')
